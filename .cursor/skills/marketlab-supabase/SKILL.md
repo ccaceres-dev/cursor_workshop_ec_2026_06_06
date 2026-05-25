@@ -1,6 +1,6 @@
 ---
 name: marketlab-supabase
-description: Use when working on MarketLab features, Supabase schema/RLS, workshop docs, or Cursor demo flow.
+description: Use when working on MarketLab features, Supabase schema/RLS, README updates, or Cursor demo flow.
 ---
 
 # MarketLab Supabase Skill
@@ -23,4 +23,4 @@ MarketLab is a fake-money prediction market for a 2-hour Cursor workshop.
 - Confirm Server Actions re-check auth and ownership.
 - Confirm RLS keeps profile, position, and settlement rows owner-scoped.
 - Confirm public market reads still work for signed-out users.
-- Run `bun run check`, `bun run typecheck`, and `bun run test:run`.
+- Run `bun run check`, `bun run typecheck`, `bun run test:run`, and relevant Playwright smoke tests.
