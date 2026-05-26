@@ -1,6 +1,6 @@
 # MarketLab
 
-MarketLab is a Cursor workshop starter: a fake-money prediction market UI built with Next.js, Tailwind CSS, shadcn-style primitives, and hosted Supabase.
+MarketLab is a Cursor workshop starter for building a fake-money prediction market with Next.js, Tailwind CSS, shadcn-style primitives, and hosted Supabase.
 
 ## Stack
 
@@ -35,13 +35,13 @@ SUPABASE_PROJECT_REF=
 
 For workshop speed, go to **Authentication > Sign In / Providers > Email** and turn off **Confirm email**.
 
-Start the static starter and open [http://localhost:3000](http://localhost:3000):
+Start the app and open [http://localhost:3000](http://localhost:3000):
 
 ```bash
 task dev
 ```
 
-You should see static demo markets and read-only market detail pages.
+You should see the MarketLab workshop start screen.
 
 ## Workshop Build
 
