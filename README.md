@@ -45,7 +45,7 @@ You should see static demo markets and read-only market detail pages.
 
 ## Workshop Build
 
-Open `prompts/01-build-marketlab.md` in Cursor and run it with Supabase MCP enabled. That prompt should generate the Supabase migration and seed files, then wire the static starter into live Auth, Database, Storage, RLS, RPC, and Server Actions.
+Workshop prompts live on the `prompts` branch. Use that branch when you are ready to run the Supabase MCP build prompt for Auth, Database, Storage, RLS, RPC, and Server Actions.
 
 If the Supabase CLI asks you to authenticate first, run:
 
