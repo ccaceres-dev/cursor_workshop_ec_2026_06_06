@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import type { MarketWithStats } from "@/lib/supabase/types";
+import type { Market } from "@/lib/marketlab";
 
 const palette = [
   "from-emerald-500 via-cyan-500 to-zinc-950",
@@ -13,7 +13,7 @@ export function MarketImage({
   market,
   priority = false,
 }: {
-  market: MarketWithStats;
+  market: Market;
   priority?: boolean;
 }) {
   if (market.imageUrl) {

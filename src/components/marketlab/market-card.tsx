@@ -2,10 +2,10 @@ import { ArrowRight, Timer } from "lucide-react";
 import Link from "next/link";
 
 import { MarketImage } from "@/components/marketlab/market-image";
+import type { Market } from "@/lib/marketlab";
 import { formatCents, formatProbability } from "@/lib/marketlab";
-import type { MarketWithStats } from "@/lib/supabase/types";
 
-export function MarketCard({ market }: { market: MarketWithStats }) {
+export function MarketCard({ market }: { market: Market }) {
   return (
     <Link
       className="group grid overflow-hidden rounded-lg border border-zinc-200 bg-white transition hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-sm md:grid-cols-[15rem_1fr]"
@@ -22,7 +22,7 @@ export function MarketCard({ market }: { market: MarketWithStats }) {
             </span>
             <span className="inline-flex items-center gap-1">
               <Timer className="size-3" />
-              Closes {formatDate(market.close_at)}
+              Closes {formatDate(market.closeAt)}
             </span>
           </div>
           <h2 className="text-xl font-semibold leading-snug tracking-tight text-zinc-950">

@@ -1,29 +1,28 @@
-import { ArrowLeft, Clock, TrendingUp } from "lucide-react";
+import { ArrowLeft, Clock, FileText } from "lucide-react";
 import Link from "next/link";
 
 import { Header } from "@/components/marketlab/header";
 import { MarketImage } from "@/components/marketlab/market-image";
-import { Notice } from "@/components/marketlab/notice";
-import { ResolveMarketForm } from "@/components/marketlab/resolve-market-form";
-import { TradeTicket } from "@/components/marketlab/trade-ticket";
 import { Button } from "@/components/ui/button";
 import { getMarketDetail } from "@/lib/data";
-import { formatCents, formatProbability } from "@/lib/marketlab";
+import {
+  formatCents,
+  formatProbability,
+  isMarketClosed,
+} from "@/lib/marketlab";
 
 export default async function MarketPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ notice?: string }>;
 }) {
-  const [{ id }, { notice }] = await Promise.all([params, searchParams]);
+  const { id } = await params;
   const data = await getMarketDetail(id);
 
   if (!data.market) {
     return (
       <div className="min-h-svh bg-zinc-50">
-        <Header configured={data.configured} viewer={data.viewer} />
+        <Header />
         <main className="mx-auto max-w-3xl px-4 py-16">
           <h1 className="text-3xl font-semibold tracking-tight">
             Market not found
@@ -37,14 +36,17 @@ export default async function MarketPage({
   }
 
   const market = data.market;
-  const canResolve = data.viewer?.id === market.creator_id;
+  const status = market.resolvedOutcome
+    ? `Resolved ${market.resolvedOutcome.toUpperCase()}`
+    : isMarketClosed(market.closeAt)
+      ? "Closed"
+      : "Open";
 
   return (
     <div className="min-h-svh bg-zinc-50 text-zinc-950">
-      <Header configured={data.configured} viewer={data.viewer} />
-      <Notice message={notice} />
+      <Header />
 
-      <main className="mx-auto grid max-w-6xl gap-8 px-4 py-8 lg:grid-cols-[1fr_22rem]">
+      <main className="mx-auto grid max-w-6xl gap-8 px-4 py-8 lg:grid-cols-[1fr_20rem]">
         <section className="min-w-0">
           <Button asChild size="sm" variant="ghost">
             <Link href="/">
@@ -64,11 +66,11 @@ export default async function MarketPage({
                 </span>
                 <span className="inline-flex items-center gap-1">
                   <Clock className="size-3" />
-                  Closes {formatDate(market.close_at)}
+                  Closes {formatDate(market.closeAt)}
                 </span>
-                {market.resolved_outcome ? (
+                {market.resolvedOutcome ? (
                   <span className="rounded-md bg-emerald-100 px-2 py-1 text-emerald-800">
-                    Resolved {market.resolved_outcome.toUpperCase()}
+                    Resolved {market.resolvedOutcome.toUpperCase()}
                   </span>
                 ) : null}
               </div>
@@ -98,43 +100,27 @@ export default async function MarketPage({
 
           <section className="mt-6 rounded-lg border border-zinc-200 bg-white p-5">
             <div className="mb-4 flex items-center gap-2">
-              <TrendingUp className="size-5 text-zinc-400" />
+              <FileText className="size-5 text-zinc-400" />
               <h2 className="text-lg font-semibold tracking-tight">
-                Recent trades
+                Resolution criteria
               </h2>
             </div>
-            {data.recentTrades.length ? (
-              <div className="divide-y divide-zinc-100">
-                {data.recentTrades.map((trade) => (
-                  <div
-                    className="grid grid-cols-[1fr_auto_auto] gap-3 py-3 text-sm"
-                    key={trade.id}
-                  >
-                    <span className="font-medium uppercase">{trade.side}</span>
-                    <span>{formatCents(trade.amount_cents)}</span>
-                    <span className="text-zinc-500">
-                      {formatProbability(trade.price_cents)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-zinc-500">No trades yet.</p>
-            )}
+            <p className="max-w-3xl text-sm leading-6 text-zinc-600">
+              {market.description}
+            </p>
           </section>
         </section>
 
         <aside className="grid content-start gap-4">
-          <TradeTicket
-            market={market}
-            position={data.position}
-            signedIn={Boolean(data.viewer)}
-          />
-          <ResolveMarketForm
-            canResolve={canResolve}
-            market={market}
-            settlement={data.settlement}
-          />
+          <section className="rounded-lg border border-zinc-200 bg-white p-5">
+            <h2 className="text-lg font-semibold tracking-tight">Contract</h2>
+            <dl className="mt-4 grid gap-4 text-sm">
+              <Metric label="Status" value={status} />
+              <Metric label="Category" value={market.category} />
+              <Metric label="Created" value={formatDate(market.createdAt)} />
+              <Metric label="Closes" value={formatDate(market.closeAt)} />
+            </dl>
+          </section>
         </aside>
       </main>
     </div>
@@ -146,6 +132,15 @@ function Stat({ label, value }: { label: string; value: string }) {
     <div className="rounded-lg border border-zinc-200 bg-white p-4">
       <div className="text-sm text-zinc-500">{label}</div>
       <div className="mt-1 text-2xl font-semibold tracking-tight">{value}</div>
+    </div>
+  );
+}
+
+function Metric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-4 border-b border-zinc-100 pb-3 last:border-0 last:pb-0">
+      <dt className="text-zinc-500">{label}</dt>
+      <dd className="text-right font-semibold text-zinc-950">{value}</dd>
     </div>
   );
 }

@@ -1,6 +1,8 @@
 # MarketLab
 
-MarketLab is a Cursor workshop app: a fake-money prediction market built with Next.js, Tailwind CSS, shadcn-style primitives, and hosted Supabase.
+MarketLab is a Cursor workshop starter: a fake-money prediction market UI built with Next.js, Tailwind CSS, shadcn-style primitives, and hosted Supabase.
+
+The repo intentionally starts with static fictional markets and no committed database schema or seed SQL. During the workshop, use the prompt in `prompts/01-build-marketlab.md` with Supabase MCP to generate auth, tables, storage, RLS, RPC functions, and seed data.
 
 ## Stack
 
@@ -35,12 +37,17 @@ SUPABASE_PROJECT_REF=
 
 For workshop speed, go to **Authentication > Sign In / Providers > Email** and turn off **Confirm email**.
 
-Link the repo to the hosted project, then apply migrations and seed demo markets:
+Start the static starter and open [http://localhost:3000](http://localhost:3000):
 
 ```bash
-task db:link
-task db:push
+task dev
 ```
+
+You should see static demo markets and read-only market detail pages.
+
+## Workshop Build
+
+Open `prompts/01-build-marketlab.md` in Cursor and run it with Supabase MCP enabled. That prompt should generate the Supabase migration and seed files, then wire the static starter into live Auth, Database, Storage, RLS, RPC, and Server Actions.
 
 If the Supabase CLI asks you to authenticate first, run:
 
@@ -48,13 +55,20 @@ If the Supabase CLI asks you to authenticate first, run:
 task db:login
 ```
 
-Start the app and open [http://localhost:3000](http://localhost:3000):
+After the prompt creates the Supabase artifacts, link the repo and apply the generated migrations and seed data:
 
 ```bash
-task dev
+task db:link
+task db:push
+task db:types
 ```
 
-You should see seeded demo markets, be able to create an email/password account, create a market with an image, trade, resolve, and claim fake winnings.
+Verify the finished workshop app:
+
+```bash
+task verify
+task e2e
+```
 
 ## Commands
 
