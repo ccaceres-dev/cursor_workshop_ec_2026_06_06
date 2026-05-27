@@ -1,27 +1,28 @@
 # MarketLab
 
-MarketLab is a Cursor workshop starter for building a fake-money prediction market with Next.js, Tailwind CSS, shadcn-style primitives, and hosted Supabase.
+MarketLab is a Cursor workshop starter for building a fake-money prediction market.
 
 ## Stack
 
-- Next.js App Router, React, TypeScript
-- Tailwind CSS and shadcn-style UI primitives
-- Supabase Auth, Postgres, Storage, RLS, and RPC
-- Zod, Vitest, Playwright, Biome, Bun
+- Next.js with TypeScript
+- Tailwind CSS with shadcn-style UI primitives
+- Supabase Auth, Database, and Storage
+- Zod for validation
+- Bun, Task, Biome, Vitest, and Playwright for local workflow
 
 ## Prerequisites
 
 Before starting, make sure you have:
 
-- A Supabase account
+- A [Supabase](https://supabase.com/) account
 - A hosted Supabase project for this workshop
 - `mise` installed: [Installing Mise](https://mise.jdx.dev/installing-mise.html)
 
-This project uses `mise` to install the pinned workshop tools. Task is the workshop command runner; see the official [Task docs](https://taskfile.dev/docs/installation) for reference, but you do not need to install it separately when using `mise`.
+This project uses `mise` to install the required tools.
 
 ## Setup
 
-Clone the repo, trust the project `mise` config, install tools, and set up dependencies:
+After cloning your repository, run:
 
 ```bash
 mise trust
@@ -30,15 +31,15 @@ task setup
 task hooks:install
 ```
 
-In your Supabase project dashboard, copy the project URL, anon key, and project ref into `.env.local`:
+In your Supabase project dashboard, click **Connect**, select **Next.js**, and copy the `.env.local` values:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 SUPABASE_PROJECT_REF=
 ```
 
-You can find the URL and anon key under **Project Settings > API**. The project ref is the short project id in your Supabase project URL.
+Add `SUPABASE_PROJECT_REF` from your Supabase project URL: `https://supabase.com/dashboard/project/<project-ref>`.
 
 For workshop speed, go to **Authentication > Sign In / Providers > Email** and turn off **Confirm email**.
 
@@ -50,11 +51,13 @@ task db:link
 task db:types
 ```
 
-Start the app and open [http://localhost:3000](http://localhost:3000):
+Start the app:
 
 ```bash
 task dev
 ```
+
+Open [http://localhost:3000](http://localhost:3000).
 
 You should see the MarketLab workshop start screen.
 

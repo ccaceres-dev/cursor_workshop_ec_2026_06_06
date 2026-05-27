@@ -1,7 +1,7 @@
 import { env } from "@/env";
 
 export const isSupabaseConfigured = Boolean(
-  env.NEXT_PUBLIC_SUPABASE_URL && env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  env.NEXT_PUBLIC_SUPABASE_URL && env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
 );
 
 export function getSupabaseConfig() {
@@ -10,7 +10,7 @@ export function getSupabaseConfig() {
   }
 
   return {
-    anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string,
+    publishableKey: env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY as string,
     url: env.NEXT_PUBLIC_SUPABASE_URL as string,
   };
 }
