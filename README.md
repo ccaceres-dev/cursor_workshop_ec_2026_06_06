@@ -26,6 +26,14 @@ powershell -ExecutionPolicy Bypass -File .\scripts\windows-setup.ps1
 
 After setup finishes, open a new Cursor terminal.
 
+If a new PowerShell window still reports that `task` is not recognized, your
+execution policy is likely blocking the PowerShell profile that activates mise.
+Allow it once for your user, then open a new PowerShell window:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
+```
+
 ## Run
 
 ```bash
