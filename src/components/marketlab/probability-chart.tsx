@@ -123,7 +123,7 @@ export function ProbabilityChart({
         <path
           d={path}
           fill="none"
-          className={cn("stroke-primary")}
+          className={cn("stroke-chart-1")}
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"

@@ -54,14 +54,14 @@ export default function RootLayout({
         <ThemeProvider>
           <Suspense
             fallback={
-              <header className="border-b border-border bg-background">
-                <div className="mx-auto flex h-[65px] max-w-6xl items-center justify-between px-4" />
+              <header className="sticky top-0 z-40 border-b border-border bg-background">
+                <div className="mx-auto flex h-[57px] max-w-6xl items-center justify-between px-4" />
               </header>
             }
           >
             <Header />
           </Suspense>
-          {children}
+          <div className="flex-1">{children}</div>
         </ThemeProvider>
       </body>
     </html>

@@ -1,9 +1,9 @@
-import { LineChart, LogIn } from "lucide-react";
+import { LogIn, Wallet } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-export function MarketsEmptyState({
+export function PositionsEmptyState({
   isAuthenticated,
 }: {
   isAuthenticated: boolean;
@@ -15,11 +15,11 @@ export function MarketsEmptyState({
           <LogIn className="size-5" />
         </div>
         <h2 className="mt-4 text-lg font-semibold text-foreground">
-          Sign in to browse markets
+          Sign in to view your positions
         </h2>
         <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-          MarketLab markets are available to signed-in participants. Once you
-          sign in, fictional Yes/No markets will appear here.
+          My Positions shows the fictional markets where you hold fake Yes or No
+          shares. Sign in to see your workshop positions.
         </p>
         <p className="mt-4 text-xs text-muted-foreground">
           Use Sign in or Sign up in the header to get started.
@@ -31,17 +31,17 @@ export function MarketsEmptyState({
   return (
     <div className="flex flex-col items-center rounded-xl border border-dashed border-border bg-card p-10 text-center">
       <div className="flex size-12 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground">
-        <LineChart className="size-5" />
+        <Wallet className="size-5" />
       </div>
       <h2 className="mt-4 text-lg font-semibold text-foreground">
-        No markets yet
+        No positions yet
       </h2>
       <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
-        There are no fictional markets in this project yet. Check back after
-        markets are added to the database.
+        You have not bought any fake shares yet. Browse open markets and buy Yes
+        or No shares with your workshop fake balance.
       </p>
-      <Button asChild variant="outline" className="mt-6">
-        <Link href="/markets">Refresh markets</Link>
+      <Button asChild className="mt-6">
+        <Link href="/markets">Browse markets</Link>
       </Button>
     </div>
   );

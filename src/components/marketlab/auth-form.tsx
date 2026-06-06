@@ -3,8 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { signInWithPassword, signUpWithPassword } from "@/app/actions/auth";
+import { FakeMoneyNote } from "@/components/marketlab/fake-money-note";
 import { Button } from "@/components/ui/button";
-import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
 type AuthMode = "sign-in" | "sign-up";
@@ -15,7 +16,7 @@ type AuthFormProps = {
 };
 
 const inputClassName =
-  "h-9 w-full rounded-lg border border-input bg-background px-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
+  "h-10 w-full rounded-lg border border-input bg-background px-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
 
 export function AuthForm({ initialMode = "sign-in", onClose }: AuthFormProps) {
   const router = useRouter();
@@ -35,16 +36,11 @@ export function AuthForm({ initialMode = "sign-in", onClose }: AuthFormProps) {
     setPending(true);
 
     try {
-      const supabase = createBrowserSupabaseClient();
-
       if (mode === "sign-in") {
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        const result = await signInWithPassword(email, password);
 
-        if (signInError) {
-          setError(signInError.message);
+        if (result.error) {
+          setError(result.error);
           return;
         }
 
@@ -53,29 +49,25 @@ export function AuthForm({ initialMode = "sign-in", onClose }: AuthFormProps) {
         return;
       }
 
-      const { data, error: signUpError } = await supabase.auth.signUp({
+      const result = await signUpWithPassword(
         email,
         password,
-        options: {
-          data: {
-            first_name: firstName.trim(),
-            last_name: lastName.trim(),
-          },
-        },
-      });
+        firstName,
+        lastName,
+      );
 
-      if (signUpError) {
-        setError(signUpError.message);
+      if (result.error) {
+        setError(result.error);
         return;
       }
 
-      if (data.session) {
-        onClose?.();
-        router.refresh();
+      if (result.needsEmailConfirmation) {
+        setCheckEmail(true);
         return;
       }
 
-      setCheckEmail(true);
+      onClose?.();
+      router.refresh();
     } catch {
       setError("Something went wrong. Try again.");
     } finally {
@@ -92,7 +84,7 @@ export function AuthForm({ initialMode = "sign-in", onClose }: AuthFormProps) {
         <p className="text-sm text-muted-foreground">
           We sent a confirmation link to{" "}
           <span className="font-medium">{email}</span>. Confirm your email, then
-          sign in to start trading fake money.
+          sign in to start exploring fake-money markets.
         </p>
         <Button
           type="button"
@@ -205,13 +197,15 @@ export function AuthForm({ initialMode = "sign-in", onClose }: AuthFormProps) {
         </p>
       ) : null}
 
-      <Button type="submit" className="w-full" disabled={pending}>
+      <Button type="submit" size="lg" className="w-full" disabled={pending}>
         {pending
           ? "Working..."
           : mode === "sign-in"
             ? "Sign in"
             : "Create account"}
       </Button>
+
+      <FakeMoneyNote />
     </form>
   );
 }
